@@ -3,6 +3,8 @@ const helmet = require('helmet')
 const cors = require('cors')
 const db = require('./data/db-config')
 
+const potlucksRouter = require('./potlucks/potlucks-router')
+
 function getAllUsers() { return db('users') }
 
 async function insertUser(user) {
@@ -17,6 +19,8 @@ const server = express()
 server.use(express.json())
 server.use(helmet())
 server.use(cors())
+
+server.use('/api/potlucks', potlucksRouter)
 
 server.get('/api/users', async (req, res) => {
   res.json(await getAllUsers())
