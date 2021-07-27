@@ -6,14 +6,16 @@ const Potlucks = require('./potlucks-model')
 // router.get('', (req, res, next) => {})
 
 router.get('/', (req, res, next) => {
-  // Potlucks.getAll()
-  //   .then(potlucks => {
-  //     res.json(potlucks)
-  //   })
-  //   .catch(next)
-  res.json({
-    message: 'see the potlucks'
-  })
+  Potlucks.getAll()
+    .then(potlucks => {
+      res.json(potlucks)
+    })
+    .catch(next)
+  // res.json({
+  //   message: 'see the potlucks'
+  // })
 })
+
+
 
 module.exports = router
