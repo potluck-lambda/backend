@@ -6,21 +6,34 @@ exports.up = async (knex) => {
       users.string("password", 200).notNullable();
       users.timestamps(false, true);
     })
-    .createTable("roles", (roles) => {
-      roles.increments("role_id");
-      roles.string("role_type").notNullable().defaultTo("guest");
-    })
-    .createTable("user_roles", (userRoles) => {
-      userRoles.increments("userRole_id");
-      userRoles
-        .integer("role_id")
+    .createTable("potlucks", (tbl) => {
+      tbl.increments("potluck_id");
+      tbl
+        .integer("organizer_id")
         .unsigned()
         .notNullable()
-        .references("role_id")
-        .inTable("roles")
+        .references("user_id")
+        .inTable("users")
         .onUpdate("CASCADE")
         .onDelete("CASCADE");
-      userRoles
+      tbl.date("date").notNullable();
+      tbl.time("time").notNullable();
+      tbl.integer("street_number").notNullable();
+      tbl.string("street_name").notNullable();
+      tbl.string("state").notNullable();
+      tbl.integer("zip_code").notNullable();
+    })
+    .createTable("users_potlucks", (tbl) => {
+      tbl.increments("user_potluck_id");
+      tbl
+        .integer("potluck_id")
+        .unsigned()
+        .notNullable()
+        .references("potluck_id")
+        .inTable("potlucks")
+        .onUpdate("CASCADE")
+        .onDelete("CASCADE");
+      tbl
         .integer("user_id")
         .unsigned()
         .notNullable()
@@ -28,11 +41,45 @@ exports.up = async (knex) => {
         .inTable("users")
         .onUpdate("CASCADE")
         .onDelete("CASCADE");
+      // tbl.boolean('RSVP')
+    })
+    .createTable("foods", (tbl) => {
+      tbl.increments("food_id");
+      tbl.string("food_name").notNullable();
+    })
+    .createTable("food-potluck", (tbl) => {
+      tbl.increments("food-potluck_id");
+      tbl
+        .integer("user_id")
+        .unsigned()
+        .notNullable()
+        .references("user_id")
+        .inTable("users")
+        .onUpdate("CASCADE")
+        .onDelete("CASCADE");
+      tbl
+        .integer("potluck_id")
+        .unsigned()
+        .notNullable()
+        .references("potluck_id")
+        .inTable("potlucks")
+        .onUpdate("CASCADE")
+        .onDelete("CASCADE");
+      tbl
+        .integer("food_id")
+        .unsigned()
+        .notNullable()
+        .references("food_id")
+        .inTable("foods")
+        .onUpdate("CASCADE")
+        .onDelete("CASCADE");
     });
 };
 
 exports.down = async (knex) => {
-  await knex.schema.dropTableIfExists("user_roles");
-  await knex.schema.dropTableIfExists("roles");
+  await knex.schema.dropTableIfExists("food-potluck");
+  await knex.schema.dropTableIfExists("foods");
+  await knex.schema.dropTableIfExists("users_potlucks");
+  await knex.schema.dropTableIfExists("potlucks");
   await knex.schema.dropTableIfExists("users");
 };
