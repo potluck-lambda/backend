@@ -1,4 +1,6 @@
 const Auth = require('./auth-model')
+const { JWT_SECRET } = require('./secrets')
+const jwt = require('jsonwebtoken')
 
 const checkUsernameUnique = async (req, res, next) => {
   const existing = await Auth.findByUsername(req.body.username)
@@ -28,9 +30,25 @@ const checkBodyEntered = (req, res, next) => {
   }
 }
 
+const restricted = (req, res, next) => {
+  const token = req.headers.authorization
+  if (!token) {
+    return next({ status: 401, message: 'token required' })
+  }
+  jwt.verify(token, JWT_SECRET, (err, decodedToken) => {
+    if (err) {
+      next({ status: 401, message: 'token invalid' })
+    } else {
+      req.decodedToken = decodedToken
+      next()
+    }
+  })
+}
+
 
 module.exports = {
   checkUsernameExists,
   checkUsernameUnique,
   checkBodyEntered,
+  restricted,
 }
