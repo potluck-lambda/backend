@@ -4,6 +4,7 @@ const cors = require('cors')
 const db = require('./data/db-config')
 
 const potlucksRouter = require('./potlucks/potlucks-router')
+const authRouter = require('./auth/auth-router')
 
 function getAllUsers() { return db('users') }
 
@@ -21,6 +22,7 @@ server.use(helmet())
 server.use(cors())
 
 server.use('/api/potlucks', potlucksRouter)
+server.use('/api/auth', authRouter)
 
 server.get('/api/users', async (req, res) => {
   res.json(await getAllUsers())
