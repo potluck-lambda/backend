@@ -32,10 +32,17 @@ router.post('/login', checkBodyEntered, checkUsernameExists, (req, res, next) =>
   }
 })
 
+router.post('/test', (req, res, next) => {
+  const { password } = req.body
+  const hash = bcrypt.hashSync(password, 8)
+  console.log(hash)
+})
+
 const buildToken = (user) => {
   const payload = {
     subject: user.user_id,
-    username: user.username
+    username: user.username,
+    user_id: user.user_id
   }
   const options = {
     expiresIn: '1d'

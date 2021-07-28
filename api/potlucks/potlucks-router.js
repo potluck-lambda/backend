@@ -2,10 +2,6 @@ const router = require('express').Router()
 const Potlucks = require('./potlucks-model')
 const { validatePotluck, validateEdit } = require('./potlucksMw')
 
-// need to get, add, update, and delete potlucks
-
-// router.get('', (req, res, next) => {})
-
 router.get('/', (req, res, next) => {
   Potlucks.getAll()
     .then(potlucks => {
