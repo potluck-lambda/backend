@@ -6,22 +6,6 @@ Login as a registered user - grants a token upon success - [POST] - /auth/login
 
 Sign up to be a user - [POST] - /auth/sign-up
 
-
-***NOT FUNCTIONAL
-<!-- /api/users
-
-Create a new user - [POST] - api/users/
-
-Get all available users - [GET] - api/users/
-
-Get a specific user - [GET] - api/users/:id
-
-Update a user - [PUT] - api/users/:id
-
-Delete a user - [DELETE] - api/users/:id -->
-***NOT FUNCTIONAL
-
-
 /api/potlucks
 
 Create a new potluck - [POST] - api/potlucks/
