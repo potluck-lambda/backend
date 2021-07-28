@@ -14,6 +14,15 @@ router.get('/', (req, res, next) => {
     .catch(next)
 })
 
+router.get('/:potluck_id', (req, res, next) => {
+  const { potluck_id } = req.params
+  Potlucks.getById(potluck_id)
+    .then(potluck => {
+      res.json(potluck)
+    })
+    .catch(next)
+})
+
 router.post('/', validatePotluck, (req, res, next) => {
   Potlucks.addPotluck(req.body)
     .then(potluck => {
