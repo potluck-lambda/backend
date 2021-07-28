@@ -3,6 +3,8 @@ const helmet = require('helmet')
 const cors = require('cors')
 const db = require('./data/db-config')
 
+const { restricted } = require('./auth/authMw')
+
 const potlucksRouter = require('./potlucks/potlucks-router')
 const authRouter = require('./auth/auth-router')
 
@@ -21,6 +23,7 @@ server.use(express.json())
 server.use(helmet())
 server.use(cors())
 
+// server.use('/api/potlucks', restricted, potlucksRouter)
 server.use('/api/potlucks', potlucksRouter)
 server.use('/api/auth', authRouter)
 
