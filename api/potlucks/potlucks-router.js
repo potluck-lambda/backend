@@ -2,14 +2,19 @@ const router = require('express').Router()
 const Potlucks = require('./potlucks-model')
 const { validatePotluck, validateEdit } = require('./potlucksMw')
 
-// need to get, add, update, and delete potlucks
-
-// router.get('', (req, res, next) => {})
-
 router.get('/', (req, res, next) => {
   Potlucks.getAll()
     .then(potlucks => {
       res.json(potlucks)
+    })
+    .catch(next)
+})
+
+router.get('/:potluck_id', (req, res, next) => {
+  const { potluck_id } = req.params
+  Potlucks.getById(potluck_id)
+    .then(potluck => {
+      res.json(potluck)
     })
     .catch(next)
 })
