@@ -1,6 +1,6 @@
 const router = require('express').Router()
 const Potlucks = require('./potlucks-model')
-const { validatePotluck } = require('./potlucksMw')
+const { validatePotluck, validateEdit } = require('./potlucksMw')
 
 // need to get, add, update, and delete potlucks
 
@@ -22,21 +22,22 @@ router.post('/', validatePotluck, (req, res, next) => {
     .catch(next)
 })
 
-router.put('/:potluck_id', (req, res, next) => {
-  res.json({
-    message: 'edit a potluck'
-  })
+router.put('/:potluck_id', validateEdit, (req, res, next) => {
+  const { potluck_id } = req.params
+  Potlucks.editPL(potluck_id, req.body)
+    .then(changedPL => {
+      res.json(changedPL)
+    })
+    .catch(next)
 })
 
 router.delete('/:potluck_id', (req, res, next) => {
-  // res.json({
-  //   message: 'delete a potluck'
-  // })
   const { potluck_id } = req.params
   Potlucks.deletePL(potluck_id)
     .then(stuff => {
       res.json({ status: 200, message: 'You have removed the potluck indicated', removed: stuff })
     })
+    .catch(next)
 })
 
 module.exports = router

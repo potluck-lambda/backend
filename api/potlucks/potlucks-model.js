@@ -6,13 +6,14 @@ function getAll() {
 
 async function addPotluck(potluck) {
   const [newPotluck] = await db('potlucks').insert(potluck, 
-    ["organizer_id",
-    "date",
-    "time",
-    "street_number",
-    "street_name",
-    "state",
-    "zip_code"
+    [
+      "organizer_id",
+      "date",
+      "time",
+      "street_number",
+      "street_name",
+      "state",
+      "zip_code"
     ])
   return newPotluck
 }
@@ -37,9 +38,33 @@ async function deletePL(potluck_id) {
   return toBeDeleted
 }
 
+async function editPL(potluck_id, 
+  {
+    date,
+    time,
+    street_number,
+    street_name,
+    state,
+    zip_code 
+  }) {
+  await db('potlucks')
+    .where("potluck_id", potluck_id)
+    .update({
+      date,
+      time,
+      street_number,
+      street_name,
+      state,
+      zip_code 
+    })
+  const updatedPL = await getById(potluck_id)
+  return updatedPL
+}
+
 module.exports = {
   getAll,
   addPotluck,
   getById,
   deletePL,
+  editPL,
 }
