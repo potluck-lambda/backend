@@ -20,7 +20,6 @@ router.post('/', validatePotluck, (req, res, next) => {
       res.status(201).json(potluck)
     })
     .catch(next)
-  // res.json({message: 'reached'})
 })
 
 router.put('/:potluck_id', (req, res, next) => {
@@ -30,9 +29,14 @@ router.put('/:potluck_id', (req, res, next) => {
 })
 
 router.delete('/:potluck_id', (req, res, next) => {
-  res.json({
-    message: 'delete a potluck'
-  })
+  // res.json({
+  //   message: 'delete a potluck'
+  // })
+  const { potluck_id } = req.params
+  Potlucks.deletePL(potluck_id)
+    .then(stuff => {
+      res.json({ status: 200, message: 'You have removed the potluck indicated', removed: stuff })
+    })
 })
 
 module.exports = router
