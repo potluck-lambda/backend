@@ -78,6 +78,7 @@ exports.up = async (knex) => {
 
 exports.down = async (knex) => {
   await knex.schema.dropTableIfExists("potluck_food");
+  //change
   // await knex.schema.dropTableIfExists("food-potluck");
   await knex.schema.dropTableIfExists("foods");
   await knex.schema.dropTableIfExists("users_potlucks");
