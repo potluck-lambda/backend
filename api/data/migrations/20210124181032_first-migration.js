@@ -47,12 +47,12 @@ exports.up = async (knex) => {
       tbl.increments("food_id");
       tbl.string("food_name").notNullable();
     })
-    .createTable("food-potluck", (tbl) => {
-      tbl.increments("food-potluck_id");
+    .createTable("potluck_food", (tbl) => {
+      tbl.increments("potluck-food_id");
       tbl
         .integer("user_id")
         .unsigned()
-        .notNullable()
+        // .notNullable()
         .references("user_id")
         .inTable("users")
         .onUpdate("CASCADE")
@@ -77,7 +77,8 @@ exports.up = async (knex) => {
 };
 
 exports.down = async (knex) => {
-  await knex.schema.dropTableIfExists("food-potluck");
+  await knex.schema.dropTableIfExists("potluck_food");
+  // await knex.schema.dropTableIfExists("food-potluck");
   await knex.schema.dropTableIfExists("foods");
   await knex.schema.dropTableIfExists("users_potlucks");
   await knex.schema.dropTableIfExists("potlucks");
